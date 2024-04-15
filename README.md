@@ -7,7 +7,7 @@
 
 8) cd backend --> go to backend
 9)  npm i --> to install the dependencies
-10)   npm run dev -->to run the backend
+10)   npm start -->to run the backend
 
 11)   before  running the backend
 

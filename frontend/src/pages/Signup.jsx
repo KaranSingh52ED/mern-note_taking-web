@@ -47,7 +47,7 @@ const Signup = () => {
 
   return (
     <div className=" flex w-full divide-y m-5 ring-2 ring-green-500 shadow-2xl bg-gradient-to-br from-red-400 to-gray-100  shadow-blue-500 items-center justify-center bg-[#f3f4f6]">
-      <form className="flex h-full divide-y m-5 ring-2 ring-green-500 shadow-2xl bg-gradient-to-br from-orange-400 to-gray-100  shadow-blue-500 m-5 w-full max-w-[420px] flex-col gap-3 bg-white p-5" onSubmit={registerUser}>
+      <form className="flex h-full divide-y  ring-2 ring-green-500 shadow-2xl bg-gradient-to-br from-orange-400 to-gray-100  shadow-blue-500 m-5 w-full max-w-[420px] flex-col gap-3 bg-white p-5" onSubmit={registerUser}>
         <h1 className="text-2xl font-black">Register</h1>
         <div className="flex items-start justify-center gap-4" >
           <div className="flex flex-col items-start justify-center">
