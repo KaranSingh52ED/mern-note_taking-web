@@ -65,7 +65,7 @@ const Login = () => {
           Log In
         </button>
         <div className="flex items-center justify-between text-sm">
-          <p className="">New to FindMyNotes?</p>
+          <p className="">New to MArkNoteS?</p>
           <Link to="/signup">
             <p className="font-bold">Create an account</p>
           </Link>

@@ -16,7 +16,7 @@ const About = () => {
             About Us
           </h1>
           <p className="mt-1 text-[15px] lg:mt-3">
-            Welcome to FindMyNotes, the ultimate hub for students to seamlessly
+            Welcome to MArkNoteS, the ultimate hub for students to seamlessly
             share and access educational resources. Our platform is designed
             with a singular purpose – to make the exchange of study materials as
             effortless as possible, fostering a collaborative and enriching
@@ -28,7 +28,7 @@ const About = () => {
             Who We Are:
           </h1>
           <p className="mt-1 text-[15px] lg:mt-3">
-            FindMyNotes is more than just a website; it's a community-driven
+          MArkNoteS is more than just a website; it's a community-driven
             initiative fueled by the passion for learning. Founded by a group of
             dedicated students, our platform is a testament to the belief that
             education should be a collective journey. Our team comprises tech
@@ -41,7 +41,7 @@ const About = () => {
             Our Mission:
           </h1>
           <p className="mt-1 text-[15px] lg:mt-3">
-            At FindMyNotes, our mission is clear: to empower students by
+            At MArkNoteS, our mission is clear: to empower students by
             providing a centralized platform where knowledge knows no
             boundaries. We aim to break down the barriers to academic success,
             making valuable study materials accessible to all.
