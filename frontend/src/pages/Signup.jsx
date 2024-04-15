@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../../config";
 const Signup = () => {
+  const navigate = useNavigate();
   const [profilePreviewImage, setProfilePreviewImage] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -38,6 +39,7 @@ const Signup = () => {
       );
       console.log("Data: ", result);
       alert("User Entry Saved in Database");
+      navigate("/login");
 
     } catch (error) {
       console.log("Failed to Register User: ", error);

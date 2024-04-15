@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { backendUrl } from "../../config";
 const UploadNote = () => {
-
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
@@ -36,12 +36,12 @@ const UploadNote = () => {
       );
       console.log("Data: ", result);
       alert("Notes Uploaded Successfully");
+      navigate("/search");
 
     } catch (error) {
       console.log("Failed to submit file: ", error);
     }
   };
-
   return (
     <form className="flex h-full w-full max-w-[770px] flex-col items-center justify-start  p-5 m-5 mt-5 md:border md:border-gray-300 divide-y rounded-lg bg-orange-200 ring-2 ring-red-500 shadow-inner  bg-gradient-to-br from-red-400 to-gray-100 shadow-yellow-200 lg:justify-center" onSubmit={submitFile}>
       <h1 className="mb-5 text-2xl font-black">Upload Your Notes</h1>
