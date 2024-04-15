@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { backendUrl } from "../../config";
 const UploadNote = () => {
 
   const [title, setTitle] = useState("");
@@ -26,7 +26,7 @@ const UploadNote = () => {
       console.log(formData);
 
       const result = await axios.post(
-        "http://localhost:6969/notes/upload",
+        `${backendUrl}/notes/upload`,
         formData,
         {
           headers: {

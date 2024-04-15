@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { backendUrl } from "../../config";
 const Signup = () => {
   const [profilePreviewImage, setProfilePreviewImage] = useState("");
   const [profileImage, setProfileImage] = useState("");
@@ -28,7 +28,7 @@ const Signup = () => {
       formData.append("profileImage", profileImage);
 
       const result = await axios.post(
-        "http://localhost:6969/auth/signup",
+        `${backendUrl}/auth/signup`,
         formData,
         {
           headers: {
@@ -42,7 +42,6 @@ const Signup = () => {
     } catch (error) {
       console.log("Failed to Register User: ", error);
     }
-
   };
 
   return (

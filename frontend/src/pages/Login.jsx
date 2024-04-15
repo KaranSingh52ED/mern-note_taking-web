@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { setUserData } from "../Redux/slices/user-slice";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import { backendUrl } from "../../config";
 const Login = () => {
 
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Login = () => {
         userPassword,
       };
 
-      const result = await axios.post("http://localhost:6969/auth/login", user);
+      const result = await axios.post(`${backendUrl}/auth/login`, user);
       console.log("User Logged in Successfully: ", result);
 
       dispatch(setUserData(result.data));
