@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../../config";
 const Signup = () => {
@@ -38,7 +38,7 @@ const Signup = () => {
         },
       );
       console.log("Data: ", result);
-      alert("User Entry Saved in Database");
+      alert("Signup Successful! Please Login to Continue.");
       navigate("/login");
 
     } catch (error) {
