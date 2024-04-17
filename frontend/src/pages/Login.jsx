@@ -25,8 +25,11 @@ const Login = () => {
       console.log("User Logged in Successfully: ", result);
 
       dispatch(setUserData(result.data));
+      setTimeout(() => {
+        alert("User Logged in Successfully");
+        navigate("/");
+      }, 500);
 
-      navigate("/");
 
     } catch (error) {
       console.log("Cannot Login the User: ", error);

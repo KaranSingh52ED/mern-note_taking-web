@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { backendUrl } from "../../config";
 import { useNavigate } from "react-router-dom";
+import { Tiptap } from "./TipTap";
+import Details from "./Details";
 const UploadNote = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -44,8 +46,8 @@ const UploadNote = () => {
     }
   };
   return (
-    <form className="flex h-full w-full max-w-[770px] flex-col items-center justify-start  p-5 m-5 mt-5 md:border md:border-gray-300 divide-y rounded-lg bg-orange-200 ring-2 ring-red-500 shadow-inner  bg-gradient-to-br from-red-400 to-gray-100 shadow-yellow-200 lg:justify-center" onSubmit={submitFile}>
-      <h1 className="mb-5 text-2xl font-black">Upload Your Notes</h1>
+    <form className="flex  w-full  flex-col items-center justify-start  p-2  mt-32   md:border md:border-gray-300 divide-y rounded-lg bg-orange-200 ring-2 ring-red-500 shadow-inner  bg-gradient-to-br from-red-400 to-gray-100 shadow-yellow-200 lg:justify-center" onSubmit={submitFile}>
+      <h1 className="mb-5 text-2xl bg-red-950 text-white p-2 font-serif rounded-full font-black">Upload Your Notes</h1>
       <div className="mb-5 w-full divide-y rounded-lg bg-orange-200  ring-1 ring-green-500 shadow-xl  shadow-yellow-200 max-w-[550px] ">
         <input
           type="text"
@@ -54,16 +56,20 @@ const UploadNote = () => {
           onChange={(e) => setTitle(e.target.value)}
           className="block w-full rounded-lg border border-gray-300 bg-green-100  p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
         />
+
       </div>
-      <div className="mb-5 w-full divide-y rounded-lg bg-orange-200  ring-1 ring-green-500 shadow-xl  shadow-yellow-200 max-w-[550px] ">
-        <textarea
-          type="text"
-          placeholder="Description"
+      <div className="mb-5 w-full divide-y rounded-lg bg-green-100 ring-1 ring-green-500 shadow-xl shadow-yellow-200 max-w-[550px]">
+
+        <Tiptap placeholder="Description"
           required
+          setDescription={setDescription}
           onChange={(e) => setDescription(e.target.value)}
-          className="block w-full rounded-lg border border-gray-300 bg-green-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
-        />
+          className="block w-full rounded-lg border border-gray-300 bg-green-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500" />
+        <Details description={description} />
+
       </div>
+
+
       <div className="mb-5 w-full divide-y rounded-lg bg-orange-200  ring-1 ring-green-500 shadow-xl  shadow-yellow-200 max-w-[550px] ">
         <input
           type="text"
@@ -111,7 +117,7 @@ const UploadNote = () => {
           </div>
         </label>
       </div>
-      <button className="my-5 w-full max-w-[550px] rounded-xl bg-green-400 divide-y  ring-2 z-10 ring-black shadow-xl  shadow-red-600 py-3 font-serif text-black hover:bg-blue-400 " type="submit">
+      <button className="m-5 w-full max-w-[550px]  text-2xl bg-red-950 text-white  font-serif rounded-full font-black divide-y  ring-2 z-10 ring-green-300 shadow-xl  shadow-orange-600 py-3 hover:bg-blue-400 " type="submit">
         Submit
       </button>
     </form>
