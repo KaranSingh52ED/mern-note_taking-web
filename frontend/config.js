@@ -1,1 +1,1 @@
-export const backendUrl = `http://localhost:6969`;
+export const backendUrl = `https://marknotes-qr32.onrender.com`;
