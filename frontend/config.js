@@ -1,1 +1,1 @@
-export const backendUrl = `https://mern-note-taking-web.onrender.com`;
+export const backendUrl = `http://localhost:6969`;

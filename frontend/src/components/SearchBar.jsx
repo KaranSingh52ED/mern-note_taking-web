@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { backendUrl } from "../../config";
 import { Link } from "react-router-dom";
 import { MdScreenShare } from "react-icons/md";
+import { useSpring, animated } from "react-spring";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,14 +21,10 @@ const SearchBar = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-
     try {
       const notes = await axios.get(`${backendUrl}/notes/getFiles`, {
-        params: {
-          title: searchQuery,
-        },
+        params: { title: searchQuery },
       });
-
       if (notes.data.data.length > 0) {
         setSearchResults(notes.data.data);
         setSearchStatus("Found");
@@ -40,96 +37,98 @@ const SearchBar = () => {
     }
   };
 
-  const showPDF = async (files) => {
+  const showPDF = (files) => {
     window.open(`${backendUrl}/files/${files}`, "_blank", "noreferrer");
   };
 
   const toggleDescriptionPopup = (description) => {
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(description, "text/html");
-    const descriptionString = htmlDoc.body.textContent;
-    setDescriptionPopup({
-      isOpen: !descriptionPopup.isOpen,
-      description: descriptionString,
-    });
+    setDescriptionPopup({ isOpen: !descriptionPopup.isOpen, description });
   };
 
+  const fadeIn = useSpring({
+    opacity: 1,
+    transform: "translateY(0px) scale(1)",
+    from: { opacity: 0, transform: "translateY(20px) scale(0.95)" },
+  });
+
   return (
-    <div className="h-heightWithoutNavbar m-5  divide-y rounded-2xl bg-gradient-to-br from-orange-400 to-gray-100 ring-black-500 shadow-inner shadow-green-300  flex flex-col items-center justify-start p-2">
-      <div className="flex w-full items-center justify-center">
+    <animated.div
+      style={fadeIn}
+      className="m-5 mt-24 flex flex-col items-center justify-start rounded-xl bg-white p-4 shadow-2xl ring-1 ring-gray-300"
+    >
+      <div className="w-full max-w-xl">
         <form
-          className="w-full max-w-[700px] border divide-y rounded-2xl bg-gradient-to-br from-red-400 to-gray-100 ring-black-500 shadow-inner shadow-blue-800 p-2"
           onSubmit={handleSearch}
+          className="flex items-center gap-3 rounded-full border-y-2 border-yellow-500 bg-gray-100 p-3 shadow-lg transition-all hover:border-y-4 hover:shadow-2xl"
         >
-          <div className="flex items-center justify-between">
-            {/* Search logo */}
-            <FaSearch className="text-2xl text-white" />
-            {/* Input */}
-            <input
-              type="search"
-              placeholder="Search for Notes"
-              className="ml-3 w-full rounded-2xl bg-gradient-to-br from-red-400 to-gray-100 ring-black-500 ring-1 mx-2 my-1 shadow-inner shadow-green-400 p-2 text-white"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="bottom-2.5 end-2.5 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
-          </div>
+          <FaSearch className="text-2xl text-darkBlue" />
+          <input
+            type="search"
+            placeholder="Search for Notes"
+            className="flex-1 bg-transparent p-2 text-gray-700 outline-none"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="transform rounded-full bg-darkBlue px-5 py-2 text-white shadow-md transition-all hover:scale-105 hover:bg-blue-800"
+          >
+            Search
+          </button>
         </form>
       </div>
-      {/* Documents */}
-      <div className="mt-5 grid w-full grid-cols-1 gap-5 border sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid w-full max-w-4xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {searchStatus === "Found" &&
           searchResults.length > 0 &&
           searchResults.map((notes) => (
-            <div
+            <animated.div
+              style={fadeIn}
               key={notes._id}
-              className="flex w-full max-w-[300px] flex-wrap-reverse items-center justify-between rounded-full bg-gradient-to-br from-red-400 to-gray-100 ring-black-500 ring-1 mx-2 my-2 shadow-inner shadow-gray-900 p-2"
+              className="transform rounded-lg bg-gray-100 p-5 shadow-lg transition-all hover:scale-105 hover:shadow-xl"
             >
-              <Link>
-                <p className="mt-2 text-sm">
-                  <span className="font-bold">Title:</span>{" "}
-                  <span>{notes.fileName}</span>
-                </p>
+              <Link to="#">
+                <p className="font-semibold text-darkBlue">{notes.fileName}</p>
               </Link>
               <button
-                className="rounded-full bg-gradient-to-br from-yellow-400 to-gray-100 ring-black-500 ring-1 mx-2 my-1 shadow-inner shadow-gray-900 p-1"
+                className="mt-3 transform rounded bg-yellow-500 px-5 py-2 text-white shadow-md transition-all hover:scale-105 hover:bg-yellow-600"
                 onClick={() => showPDF(notes.files)}
               >
                 Show PDF
               </button>
               <MdScreenShare
-                className="rounded-full h-8 w-8 bg-gradient-to-br from-yellow-400 to-gray-100 ring-black-500 ring-1 mx-2 my-1 shadow-inner shadow-gray-900 p-1"
+                className="mt-3 transform cursor-pointer text-2xl text-darkBlue transition-all hover:scale-110 hover:text-blue-800"
                 onClick={() => toggleDescriptionPopup(notes.fileDescription)}
               />
-            </div>
+            </animated.div>
           ))}
         {searchStatus === "Not-Found" && (
-          <div className="mt-4 text-center text-gray-600 dark:text-gray-800">
+          <div className="col-span-full text-center text-gray-500">
             No Notes Found
           </div>
         )}
       </div>
-      {/* Description Popup */}
       {descriptionPopup.isOpen && (
-        <div className="fixed inset-0 flex rounded-full w-screen items-center bg-gradient-to-br from-yellow-400 to-gray-100 ring-black-500 ring-1 mx-4 my-1 shadow-inner shadow-gray-900 justify-center z-50 bg-opacity-50">
-          <div className="bg-white p-8 max-w-[750px] bg-gradient-to-br from-orange-400 to-gray-100 ring-black-500 shadow-green-300 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">File Description</h2>
-            <p>{descriptionPopup.description}</p>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <animated.div
+            style={fadeIn}
+            className="max-w-md rounded-lg bg-white p-6 shadow-xl"
+          >
+            <h2 className="mb-4 text-lg font-semibold text-darkBlue">
+              File Description
+            </h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: descriptionPopup.description }}
+            />
             <button
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              onClick={() => toggleDescriptionPopup("")} // Close Popup
+              className="mt-4 transform rounded bg-red-500 px-5 py-2 text-white shadow-md transition-all hover:scale-105 hover:bg-red-600"
+              onClick={() => toggleDescriptionPopup("")}
             >
               Close
             </button>
-          </div>
+          </animated.div>
         </div>
       )}
-    </div>
+    </animated.div>
   );
 };
 

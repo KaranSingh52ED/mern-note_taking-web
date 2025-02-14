@@ -1,78 +1,109 @@
 import React, { useEffect, useState } from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { backendUrl } from "../../config";
+import { ClipLoader } from "react-spinners";
+
 const Profile = () => {
-
   const user = useSelector((state) => state.user.userData);
-
   const [userFiles, setUserFiles] = useState([]);
-
-  const userId = user._id;
+  const [loading, setLoading] = useState(true); // State for loading spinner
+  const userId = user?._id;
 
   useEffect(() => {
-    const getUserFiles = async () => {
-      const result = await axios.get(`${backendUrl}/notes/getFiles/${userId}`);
-      console.log(result.data);
-      setUserFiles(result.data.data);
+    const fetchUserFiles = async () => {
+      try {
+        setLoading(true); // Start loading
+        const response = await axios.get(
+          `${backendUrl}/notes/getFiles/${userId}`,
+        );
+        setUserFiles(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching user files:", error);
+      } finally {
+        setLoading(false); // Stop loading
+      }
     };
 
-    getUserFiles();
+    if (userId) fetchUserFiles();
   }, [userId]);
 
-  const numberofUploads = userFiles.length;
-  const numberofFiles = userFiles.reduce((count, file) => count + 1, 0);
+  const numberOfUploads = userFiles.length;
 
   return (
-    <div className="lg:h-heightWithoutNavbar divide-y m-5  shadow-2xl bg-gradient-to-br from-orange-400 to-gray-100  shadow-blue-500 flex flex-col items-center justify-center border border-red-500 lg:flex-row">
-      <div className="flex w-full flex-col items-center  justify-center border-[3px] border-green-500 py-4 lg:h-full lg:w-[40%]">
-        <div className="grid h-[200px]  w-[200px] place-content-center overflow-hidden rounded-full bg-gray-400 text-2xl font-black">
-          {/* 200 x 200 */}
-          <img src={user.profileImage} alt="userprofile" className="" />
+    <div className="mt-16 flex flex-col items-center justify-center gap-8 bg-darkBlue bg-opacity-15 px-6 py-10 lg:flex-row lg:py-16">
+      {/* Profile Section */}
+      <div className="flex w-full flex-col items-center justify-center rounded-lg bg-white p-8 shadow-lg lg:w-2/5">
+        {/* Profile Image */}
+        <div className="relative h-32 w-32 overflow-hidden rounded-full bg-gray-300 shadow-md">
+          <img
+            src={user?.profileImage || "/default-profile.png"}
+            alt="User Profile"
+            className="h-full w-full object-cover"
+          />
         </div>
-        <div className="">
-          <div className=" my-2 flex  flex-col items-center justify-center ">
-            <h2 className="text-2xl font-black">
-              <span>{user.firstName}</span> <span>{user.lastName}</span>
-            </h2>
-            <p className="mt-1 text-center">{user.userName}</p>
-            <p className="mt-1 text-center">
-              {user.userBio}
+
+        {/* User Info */}
+        <div className="mt-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-800">
+            {user?.firstName} {user?.lastName}
+          </h2>
+          <p className="text-gray-600">@{user?.userName}</p>
+          <p className="mt-3 text-sm text-gray-500">
+            {user?.userBio || "This user has not added a bio yet."}
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-8 flex w-full items-center justify-around border-t border-gray-200 pt-4">
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-500">Uploads</p>
+            <p className="text-xl font-bold text-indigo-600">
+              {numberOfUploads}
+            </p>
+          </div>
+          <div className="h-12 w-px bg-gray-300"></div>
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-500">Total Files</p>
+            <p className="text-xl font-bold text-indigo-600">
+              {numberOfUploads}
             </p>
           </div>
         </div>
-        {/* counts */}
-        <div className="flex items-center justify-center gap-4">
-          <div className="grid h-[80px] w-[100px] place-content-center">
-            <p className="text-center text-[12px] font-bold">
-              No. of Uploads :
-            </p>
-            <p className="text-center text-5xl font-black">{numberofUploads}</p>
-          </div>
-          <span className="h-[60px] w-[1px] bg-gray-400" />
-          <div className="grid h-[80px] w-[100px] place-content-center">
-            <p className="text-center text-[12px] font-bold">No. of Files :</p>
-            <p className="text-center text-5xl font-black">{numberofFiles}</p>
-          </div>
-        </div>
       </div>
-      <div className="h-auto w-full divide-y m-5  shadow-2xl bg-gradient-to-br from-red-400 to-gray-100  shadow-red-500  border-[3px] border-amber-500 p-5 rounded-br-full lg:h-full lg:w-[60%]">
-        <h1 className="mb-3 text-xl font-black">My Documents :</h1>
-        <div className="grid grid-cols-1 gap-5 p-4 sm:grid-cols-2 md:grid-cols-3">
-          {userFiles.map((file) => (
-            <a
-              href={`${backendUrl}/files/${file.files}`}
-              key={file._id}
-              className="mb-3 flex h-[35px] max-w-[250px] items-center justify-between gap-10 rounded-xl border border-black px-4"
-              target="_blank"
-            >
-              <p className="font-semibold"> {file.fileName}</p>
-            </a>
-          ))}
-        </div>
+
+      {/* Documents Section */}
+      <div className="w-full rounded-lg bg-white p-8 shadow-lg lg:w-3/5">
+        <h3 className="mb-6 text-xl font-bold text-gray-800">My Documents</h3>
+
+        {/* Loading Spinner */}
+        {loading ? (
+          <div className="flex h-[200px] items-center justify-center">
+            <ClipLoader color="#6366F1" size={50} />
+          </div>
+        ) : userFiles.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {userFiles.map((file) => (
+              <a
+                key={file._id}
+                href={`${backendUrl}/files/${file.files}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-4 transition-shadow hover:border-indigo-500 hover:shadow-md"
+              >
+                <span className="truncate text-gray-700">{file.fileName}</span>
+                <FaExternalLinkAlt size={16} color="#6366F1" />
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">
+            No documents uploaded yet.
+          </p>
+        )}
       </div>
-    </div >
+    </div>
   );
 };
 
